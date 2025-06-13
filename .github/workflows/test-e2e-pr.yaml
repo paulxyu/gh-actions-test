@@ -20,8 +20,8 @@ jobs:
       
       - name: PR checkout
         run: |
-          git checkout ${{ github.event.issue.pull_request.head.ref }}
-          git reset --hard ${{ github.event.issue.pull_request.head.sha }}
+          gh pr checkout ${{ github.event.pull_request.number }}
+          tree
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
