@@ -62,11 +62,7 @@ jobs:
       #       });
 
       - name: Print org
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const submittingOrg = context.payload.issue.pull_request.head.repo.owner.login;
-            console.log(`The PR was submitted by: ${submittingOrg}`);
+        run: "echo ${{ github.event.issue.pull_request.url }}"
 
       - name: Add status comment - Starting
         uses: actions/github-script@v7
