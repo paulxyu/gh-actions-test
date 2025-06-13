@@ -15,8 +15,9 @@ jobs:
     if: startsWith(github.event.comment.body, '/test-e2e') && github.event.issue.pull_request
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      
       - name: PR checkout
         run: |
           git checkout ${{ github.event.issue.pull_request.head.ref }}
