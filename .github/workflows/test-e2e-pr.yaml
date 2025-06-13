@@ -72,7 +72,6 @@ jobs:
               body: `🚀 @${context.actor} Starting E2E tests...
               
               **Workflow Run:** [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-              **Changes:** ${{ github.event.issue.pull_request.html_url }}/files
               **Environment:** ${{ vars.AZURE_ENV_NAME }}
               **Location:** ${{ vars.AZURE_LOCATION }}`
             });
