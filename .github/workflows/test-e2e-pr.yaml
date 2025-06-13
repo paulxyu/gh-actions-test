@@ -49,16 +49,16 @@ jobs:
     if: needs.check-permissions.outputs.has-permission == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: React to comment
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.reactions.createForIssueComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: context.payload.comment.id,
-              content: 'rocket'
-            });
+      # - name: React to comment
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       github.rest.reactions.createForIssueComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         comment_id: context.payload.comment.id,
+      #         content: 'rocket'
+      #       });
 
       - name: Add status comment
         uses: actions/github-script@v7
