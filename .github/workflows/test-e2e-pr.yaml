@@ -54,6 +54,7 @@ jobs:
 
       - name: Test
         run: |
+          printenv
           azd up --no-prompt
         env:
           AZURE_ENV_NAME: test
