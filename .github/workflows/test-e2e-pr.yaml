@@ -79,6 +79,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
+      - name: Print Organization Name
+        run: echo "The organization is: ${{ github.repository_owner }}"
+        
       - name: PR checkout
         run: |
           PR_URL="${{ github.event.issue.pull_request.url }}"
