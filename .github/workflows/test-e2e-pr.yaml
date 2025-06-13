@@ -20,7 +20,7 @@ jobs:
       
       - name: PR checkout
         run: |
-          gh pr checkout ${{ github.event.pull_request.number }}
+          gh pr checkout ${{ github.event.issue.pull_request.number }}
           tree
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
