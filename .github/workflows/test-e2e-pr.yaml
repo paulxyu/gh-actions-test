@@ -22,6 +22,8 @@ jobs:
         run: |
           gh pr checkout ${{ github.event.pull_request.number }}
           tree
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
