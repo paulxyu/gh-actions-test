@@ -9,6 +9,7 @@ on:
 permissions:
   id-token: write
   contents: read
+  issues: write
 
 jobs:
   check-permissions:
@@ -56,7 +57,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: context.payload.comment.id,
-              content: '+1'
+              content: 'rocket'
             });
 
       - name: Add status comment
