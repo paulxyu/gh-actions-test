@@ -61,6 +61,13 @@ jobs:
       #         content: 'rocket'
       #       });
 
+      - name: Print org
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const submittingOrg = context.payload.issue.pull_request.head.repo.owner.login;
+            console.log(`The PR was submitted by: ${submittingOrg}`);
+
       - name: Add status comment - Starting
         uses: actions/github-script@v7
         with:
@@ -78,9 +85,6 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-
-      - name: Print Organization Name
-        run: echo "The organization is: ${{ github.repository_owner }}"
         
       - name: PR checkout
         run: |
