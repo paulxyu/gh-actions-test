@@ -11,13 +11,68 @@ permissions:
   contents: read
 
 jobs:
+  check-permissions:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test-e2e')
+    runs-on: ubuntu-latest
+    outputs:
+      has-permission: ${{ steps.check.outputs.has-permission }}
+    steps:
+      - name: Check if user has permission
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: collaborator } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              username: context.actor
+            });
+
+            const hasPermission = ['admin', 'maintain'].includes(collaborator.permission);
+            console.log(`User ${context.actor} has permission: ${collaborator.permission}`);
+            console.log(`Has required permission: ${hasPermission}`);
+
+            core.setOutput('has-permission', hasPermission);
+
+            if (!hasPermission) {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `❌ @${context.actor} You don't have permission to run this command. Only repository owners and maintainers can trigger this workflow.`
+              });
+            }
+
   test-e2e:
-    if: startsWith(github.event.comment.body, '/test-e2e') && github.event.issue.pull_request
+    needs: check-permissions
+    if: needs.check-permissions.outputs.has-permission == 'true'
     runs-on: ubuntu-latest
     steps:
+      - name: React to comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: '+1'
+            });
+
+      - name: Add status comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 @${context.actor} Starting E2E tests...`
+            });
+
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      
+
       - name: PR checkout
         run: |
           PR_URL="${{ github.event.issue.pull_request.url }}"
@@ -69,4 +124,3 @@ jobs:
           AZURE_ENV_NAME: test
           AZURE_LOCATION: swedencentral
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
