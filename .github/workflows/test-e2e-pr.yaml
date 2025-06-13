@@ -63,6 +63,7 @@ jobs:
 
       - name: Clean up
         run: |
+          printenv
           azd down --force
         env:
           AZURE_ENV_NAME: test
