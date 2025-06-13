@@ -65,14 +65,12 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.pull_requests.get({
+            github.rest.issues.data({
+              issue_number: context.issue.number,
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            }).then(pr => {
-              console.log(`PR URL: ${pr.data.html_url}`);
-              console.log(`PR Number: ${pr.data.number}`);
-              console.log('PR Owner: ${pr.repo.owner.login}');
+              repo: context.repo.repo
+            }).then(owner => {
+              console.log(`Owner: ${JSON.stringify(owner.data, null, 2)}`);
             });
 
       - name: Add status comment - Starting
