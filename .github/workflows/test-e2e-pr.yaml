@@ -61,17 +61,11 @@ jobs:
       #         content: 'rocket'
       #       });
 
-      - name: Print org
+      - name: Print submitting org
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.data({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            }).then(owner => {
-              console.log(`Owner: ${JSON.stringify(owner.data, null, 2)}`);
-            });
+            echo `Organization: ${context.head.repo.owner}`;
 
       - name: Add status comment - Starting
         uses: actions/github-script@v7
