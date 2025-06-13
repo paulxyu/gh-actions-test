@@ -20,7 +20,9 @@ jobs:
       
       - name: PR checkout
         run: |
-          gh pr checkout ${{ github.event.issue.pull_request.number }}
+          PR_URL="${{ github.event.issue.pull_request.url }}"
+          PR_NUM=${PR_URL##*/}
+          gh pr checkout $PR_NUM
           tree
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
