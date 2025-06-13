@@ -62,7 +62,18 @@ jobs:
       #       });
 
       - name: Print org
-        run: "echo ${{ github.event.issue.pull_request.url }}"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.pull_requests.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }).then(pr => {
+              console.log(`PR URL: ${pr.data.html_url}`);
+              console.log(`PR Number: ${pr.data.number}`);
+              console.log('PR Owner: ${pr.repo.owner.login}');
+            });
 
       - name: Add status comment - Starting
         uses: actions/github-script@v7
